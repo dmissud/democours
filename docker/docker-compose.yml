@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  dbs.demo_springboot:
+    image: adoptopenjdk:8-jdk-openj9
+    command: java -jar /home/demo/democours.jar
+    volumes:
+      - "../target:/home/demo"
+    ports:
+      - "8090:8080"
