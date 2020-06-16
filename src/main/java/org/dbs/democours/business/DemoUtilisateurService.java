@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class DemoUtilisateurService implements IDemoUtilisateurService {
@@ -47,6 +45,34 @@ public class DemoUtilisateurService implements IDemoUtilisateurService {
         }
 
         return descUtilisateurs;
+    }
+
+    @Override
+    public void changeFirstNameUtilisateur(CmdChangeFirstName cmdChangeFirstName) {
+        List<Utilisateur> utilisateurs = daoUtilisateur.findByLastName(cmdChangeFirstName.getLastName());
+        Utilisateur utilisateurExistant = findUtilisateurByFirstName(utilisateurs, cmdChangeFirstName.getNewFirstName());
+        if (utilisateurExistant == null) {
+            Utilisateur aUtilisateur = findUtilisateurByFirstName(utilisateurs, cmdChangeFirstName.getOldFirstName());
+            if (aUtilisateur != null) {
+                aUtilisateur.setFirstName(cmdChangeFirstName.getNewFirstName());
+                daoUtilisateur.save(aUtilisateur);
+                System.out.println(cmdChangeFirstName + " ok");
+            } else {
+                System.out.println(cmdChangeFirstName + " porte sur un utilisateur qui existe pas : cmd impossible");
+            }
+        } else {
+            System.out.println(utilisateurExistant + " existe déjà : cmd impossible");
+        }
+    }
+
+    private Utilisateur findUtilisateurByFirstName(List<Utilisateur> utilisateurs, String firstName) {
+        Utilisateur aUtilisateur = null;
+        for(Utilisateur utilisateur: utilisateurs) {
+            if (utilisateur.getFirstName().equals(firstName)) {
+                aUtilisateur = utilisateur;
+            }
+        }
+        return aUtilisateur;
     }
 
     private void createUtilisateurFromCmd(CmdCreateUtilisateur cmdCreateUtilisateur) {

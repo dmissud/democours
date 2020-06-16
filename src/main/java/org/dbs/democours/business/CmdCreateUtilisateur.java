@@ -32,4 +32,15 @@ public class CmdCreateUtilisateur {
                 ", firstName='" + firstName + '\'' +
                 '}';
     }
+
+    public boolean isValid() {
+        boolean isOk;
+        isOk = !((lastName == null) ||
+                (lastName.isEmpty()) ||
+                (firstName == null) ||
+                (firstName.isEmpty()));
+
+        return isOk;
+    }
 }
+
