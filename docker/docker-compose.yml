@@ -7,3 +7,11 @@ services:
       - "../target:/home/demo"
     ports:
       - "8090:8080"
+  dbs.db_test:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=db_test
+      - POSTGRES_USER=dmissud
+      - POSTGRES_PASSWORD=garage
